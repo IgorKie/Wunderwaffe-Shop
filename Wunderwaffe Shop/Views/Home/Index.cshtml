@@ -1,0 +1,52 @@
+﻿@model List<Product>
+@{
+    ViewData["Title"] = "Home Page";
+    ViewData["HomePage"] = true;
+}
+
+<div style="background-color: #08618d;">
+    <div class="container text-white py-5">
+        <div class="row align-items-center g-5">
+            <div class="col-md-6">
+                <h1 class="mb-5 display-2"><strong>Wunderwaffe shop!</strong></h1>
+                <p>
+                    Najlepszy sklep z modelami o tematyce wunderwaffe w Polsce!
+                </p>
+            </div>
+            <div class="col-md-6 text-center">
+                <img src="/images/logo.png" class="img-fluid" alt="hero" />
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="bg-light">
+    <div class="container py-4">
+        <h2 class="pb-4 text-center">Sprawdź najnowsze produkty!</h2>
+
+        <div class="row mb-5 g-3">
+            @foreach (var product in Model)
+            {
+                <div class="col-lg-3 col-md-6">
+                    <div class="rounded border shadow p-3 text-center h-100">
+                        <img src="/products/@product.ImageFileName" class="img-fluid" alt="..."
+                             style="height: 180px; object-fit: contain" />
+                        <hr />
+                        <h5 class="py-2">@product.Name</h5>
+                        <p>
+                             Kategoria: @product.Category
+                        </p>
+                        <h4 class="mb-3">@(product.Price)zł</h4>
+                        <a class="btn btn-primary btn-sm mb-2" asp-controller="Store"
+                           asp-action="Details" asp-route-id="@product.Id" asp-controller="Store" asp-action="Details" asp-route-id="@product.Id" role="button">Szczegóły</a>
+                        <button type="button" class="btn btn-warning btn-sm mb-2" onclick="addToCart(this, @product.Id)">
+                            Dodaj do koszyka <i class="bi bi-cart4"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

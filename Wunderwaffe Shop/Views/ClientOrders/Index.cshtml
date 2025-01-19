@@ -1,0 +1,64 @@
+﻿@{
+}
+
+
+<h3 class="text-center mb-4">List of Orders</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Ilość</th>
+            <th>Cena całkowita</th>
+            <th>Typ zapłaty</th>
+            <th>Stan zapłaty</th>
+            <th>Stan przesyłki</th>
+            <th>Data</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (Order order in ViewBag.Orders)
+        {
+            int count = 0;
+            decimal total = order.ShippingFee;
+            foreach (OrderItem item in order.Items)
+            {
+                count += item.Quantity;
+                total += item.Quantity * item.UnitPrice;
+            }
+
+
+            
+
+            <tr>
+                <td>@count</td>
+                <td>@(total)zł</td>
+                <td>@order.PaymentMethod</td>
+                <td><span class="">@order.PaymentStatus</span></td>
+                <td><span class="">@order.OrderStatus</span></td>
+                <td>@order.CreatedAt.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-controller="ClientOrders" asp-action="Details"
+                       asp-route-id="@order.Id">Szczegóły</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<nav>
+    <ul class="pagination">
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            string active = "";
+            if (i == ViewBag.PageIndex) active = "active";
+
+            <li class="page-item @active">
+                <a class="page-link" asp-route-pageIndex=@i>@i</a>
+            </li>
+        }
+    </ul>
+</nav>

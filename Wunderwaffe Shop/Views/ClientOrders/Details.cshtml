@@ -1,0 +1,111 @@
+﻿@model Order
+@{
+
+}
+
+
+
+<h3 class="text-center mb-4">Szczegóły zamówienia</h3>
+
+<a class="btn btn-link" asp-controller="ClientOrders" asp-action="Index">Zamówienia</a>
+
+<div class="row mb-4">
+    <div class="col">
+        <div class="border rounded py-3 px-4 h-100">
+            <h3 class="mb-4">Zamówienie</h3>
+
+            <div class="row mb-2 pb-2 border-bottom">
+                <div class="col">ID zamówienia</div>
+                <div class="col">@Model.Id</div>
+            </div>
+
+            <div class="row mb-2 pb-2 border-bottom">
+                <div class="col">Adres przesyłki</div>
+                <div class="col">@Model.DeliveryAddress</div>
+            </div>
+
+            <div class="row mb-2 pb-2 border-bottom">
+                <div class="col">Typ zapłacenia</div>
+                <div class="col">@Model.PaymentMethod</div>
+            </div>
+
+            <div class="row mb-2 pb-2 border-bottom">
+                <div class="col">Stan zapłaty</div>
+                <div class="col">
+                    <span class="">@Model.PaymentStatus</span>
+                </div>
+            </div>
+
+            <div class="row mb-2 pb-2 border-bottom">
+                <div class="col">Status zamówienia</div>
+                <div class="col">
+                    <span class="">@Model.OrderStatus</span>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col">Data zamówienia</div>
+                <div class="col">@Model.CreatedAt</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th style="width: 100px">Opis</th>
+            <th></th>
+            <th style="width:100px">Ilość</th>
+            <th style="width:100px">Cena</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            decimal subtotal = 0;
+            foreach (var item in Model.Items)
+            {
+                subtotal += item.UnitPrice * item.Quantity;
+
+                <tr>
+                    <td>
+                        <img src="/products/@item.Product.ImageFileName" width="100" alt="..." />
+                    </td>
+                    <td>
+                        <h4>
+                            <a style="text-decoration: none; color: inherit;" asp-controller="Store"
+                               asp-action="Details" asp-route-id="@item.Product.Id">
+                                @item.Product.Name
+                            </a>
+                        </h4>
+                        @item.Product.Category<br>
+                        @(item.UnitPrice)zł
+                    </td>
+                    <td>@item.Quantity</td>
+                    <td>@(item.UnitPrice * item.Quantity)zł</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+
+<div class="ms-auto mb-3" style="width: 250px">
+    <div class="row">
+        <div class="col fw-bold">Cena produktu:</div>
+        <div class="col text-end">@(subtotal)zł</div>
+    </div>
+    <div class="row">
+        <div class="col fw-bold">Koszt wysyłki:</div>
+        <div class="col text-end">@(Model.ShippingFee)zł</div>
+    </div>
+    <div class="row">
+        <div class="col fw-bold">Cena całkowita:</div>
+        <div class="col text-end">@(subtotal + Model.ShippingFee)zł</div>
+    </div>
+</div>
+
+

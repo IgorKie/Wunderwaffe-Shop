@@ -1,0 +1,46 @@
+﻿@{
+}
+
+
+<div class="mx-auto rounded border p-4" style="width: 420px">
+    <h2 class="text-center mb-3">Szczegóły</h2>
+    <hr />
+
+    @if (ViewBag.SuccessMessage != null)
+    {
+        <div class="alert alert-success" role="alert">@ViewBag.SuccessMessage</div>
+        <a class="btn btn-outline-primary" asp-controller="ClientOrders" asp-action="Index">Cofnij</a>
+    }
+    else
+    {
+        <div class="row mb-3">
+            <div class="col-5">Adres dostawy</div>
+            <div class="col-7">@ViewBag.DeliveryAddress</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-5">Metoda płatności</div>
+            <div class="col-7">@ViewBag.PaymentMethod</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-5">Finalna kwota</div>
+            <div class="col-7">@(ViewBag.Total)zł</div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-5">Ilość</div>
+            <div class="col-7">@(ViewBag.CartSize)</div>
+        </div>
+
+
+        <form method="post">
+            <div class="row">
+                <div class="col-sm-6 d-grid">
+                    <button type="submit" class="btn btn-primary">Potwierdzenie</button>
+                </div>
+                <div class="col-sm-6 d-grid">
+                    <a class="btn btn-outline-primary" asp-controller="Cart" asp-action="Index">Cofnij</a>
+                </div>
+            </div>
+        </form>
+    }
+
+</div>

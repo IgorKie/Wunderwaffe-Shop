@@ -1,0 +1,125 @@
+﻿@model ApplicationUser
+@{
+}
+
+<div class="row">
+	<div class="col-lg-6 mx-auto rounded border p-4">
+		<h2 class="text-center mb-3">Szczegóły użytkownika</h2>
+		<hr />
+
+		@if (TempData["ErrorMessage"] != null)
+		{
+			<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+				<strong>@TempData["ErrorMessage"]</strong>
+				<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+			</div>
+		}
+		else if (TempData["SuccessMessage"] != null)
+		{
+			<div class='alert alert-success alert-dismissible fade show' role='alert'>
+				<strong>@TempData["SuccessMessage"]</strong>
+				<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+			</div>
+		}
+
+		<div class="row mb-2">
+			<div class="col-sm-4">Imie</div>
+			<div class="col-sm-8">@Model.FirstName</div>
+		</div>
+
+		<div class="row mb-2">
+			<div class="col-sm-4">Nazwisko</div>
+			<div class="col-sm-8">@Model.LastName</div>
+		</div>
+
+		<div class="row mb-2">
+			<div class="col-sm-4">Email</div>
+			<div class="col-sm-8">@Model.Email</div>
+		</div>
+
+		<div class="row mb-2">
+			<div class="col-sm-4">Telefon</div>
+			<div class="col-sm-8">@Model.PhoneNumber</div>
+		</div>
+
+		<div class="row mb-2">
+			<div class="col-sm-4">Adres</div>
+			<div class="col-sm-8">@Model.Address</div>
+		</div>
+
+		<div class="row mb-2">
+			<div class="col-sm-4">Rola</div>
+			<div class="col-sm-8">
+				@{
+					var roles = ViewBag.Roles;
+					var rolesStr = String.Join(", ", roles);
+					@rolesStr;
+					<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#roleModal">Edytuj</button>
+				}
+			</div>
+		</div>
+
+		<div class="row mb-2">
+			<div class="col-sm-4">Utworzono</div>
+			<div class="col-sm-8">@Model.CreatedAt</div>
+		</div>
+
+		<hr />
+
+		<div>
+			<a class="btn btn-primary" asp-controller="Users" asp-action="Index">Cofnij</a>
+
+			<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Usuń</button>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="roleModal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Edytuj role użytkownika</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<form method="get" asp-controller="Users" asp-action="EditRole">
+					<input type="hidden" value="@Model.Id" name="id" />
+					<label>Wybierz role dla użytkownika</label>
+					<select class="form-select mb-2" name="newRole" asp-items="@ViewBag.SelectItems">
+					</select>
+
+					<button type="submit" class="btn btn-primary">Potwierdź</button>
+				</form>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Usuń konto użytkownika</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<p>Czy jesteś pewny aby usunąć konto?</p>
+
+			</div>
+			<div class="modal-footer">
+				<a class="btn btn-danger" role="button" asp-controller="Users" asp-action="DeleteAccount"
+				   asp-route-id="@Model.Id">Usuń</a>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+			</div>
+		</div>
+	</div>
+</div>
